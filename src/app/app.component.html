@@ -9,6 +9,23 @@
 <p> {{ date.value }} </p>
 
 <mat-form-field>
+  <mat-label>Goal 1</mat-label>
+  <input matInput type="number" [(ngModel)]="goal1">
+</mat-form-field>
+
+<mat-form-field>
+  <mat-label>Goal 2</mat-label>
+  <input matInput type="number" [(ngModel)]="goal2">
+</mat-form-field>
+
+<mat-form-field>
+  <mat-label>Goal 3</mat-label>
+  <input matInput type="number" [(ngModel)]="goal3">
+</mat-form-field>
+
+<br>
+
+<mat-form-field>
   <mat-label>Field 1</mat-label>
   <input matInput type="number" [(ngModel)]="field1">
 </mat-form-field>
@@ -23,6 +40,22 @@
   <input matInput type="number" [(ngModel)]="field3">
 </mat-form-field>
 
-<p> {{ field1 }} {{ field2 }} {{ field3 }} </p>
-
 <button mat-raised-button>Submit</button>
+
+<mat-progress-bar
+  [value]="(field1 / goal1) * 100"
+></mat-progress-bar>
+
+<br>
+
+<mat-progress-bar
+  [value]="(field2 / goal2) * 100"
+></mat-progress-bar>
+
+<br>
+
+<mat-progress-bar
+  [value]="(field3 / goal3) * 100"
+></mat-progress-bar>
+
+<br>
