@@ -7,3 +7,22 @@
 </mat-form-field>
 
 <p> {{ date.value }} </p>
+
+<mat-form-field>
+  <mat-label>Field 1</mat-label>
+  <input matInput type="number" [(ngModel)]="field1">
+</mat-form-field>
+
+<mat-form-field>
+  <mat-label>Field 2</mat-label>
+  <input matInput type="number" [(ngModel)]="field2">
+</mat-form-field>
+
+<mat-form-field>
+  <mat-label>Field 3</mat-label>
+  <input matInput type="number" [(ngModel)]="field3">
+</mat-form-field>
+
+<p> {{ field1 }} {{ field2 }} {{ field3 }} </p>
+
+<button mat-raised-button>Submit</button>
