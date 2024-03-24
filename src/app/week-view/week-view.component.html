@@ -1,1 +1,30 @@
-<p>week-view works!</p>
+<h1>Weekly View</h1>
+
+<mat-form-field>
+    <mat-label>Week ending</mat-label>
+    <input matInput [matDatepicker]="picker" [formControl]="date">
+    <mat-hint>MM/DD/YYYY</mat-hint>
+    <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+    <mat-datepicker #picker></mat-datepicker>
+</mat-form-field>
+
+<p> From {{ fromDate }} To {{ date.value }} </p>
+
+<table>
+    <thead>
+        <tr>
+            <td> Task </td>
+            <td> Hours Done </td>
+            <td> Min Goal </td>
+            <td> Max Goal </td>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let task of tasks; index as i;">
+            <td> {{ task.name }} </td>
+            <td> {{ task.hoursDone }} </td>
+            <td> {{ task.minGoal }} </td>
+            <td> {{ task.maxGoal }} </td>
+        </tr>
+    </tbody>
+</table>
