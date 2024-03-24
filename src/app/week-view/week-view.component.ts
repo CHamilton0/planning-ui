@@ -12,7 +12,7 @@ import { CommonModule } from '@angular/common';
 import { MatTableModule } from '@angular/material/table';
 
 @Component({
-  selector: 'week-view',
+  selector: 'app-week-view',
   standalone: true,
   imports: [
     RouterOutlet,
