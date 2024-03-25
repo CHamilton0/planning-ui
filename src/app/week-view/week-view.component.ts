@@ -7,7 +7,7 @@ import { MatInputModule } from '@angular/material/input';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
-import { Task } from '../task';
+import { Task } from '../interfaces/task';
 import { CommonModule } from '@angular/common';
 import { MatTableModule } from '@angular/material/table';
 
@@ -28,17 +28,17 @@ import { MatTableModule } from '@angular/material/table';
     MatTableModule,
   ],
   templateUrl: './week-view.component.html',
-  styleUrl: './week-view.component.scss'
+  styleUrl: './week-view.component.scss',
 })
 export class WeekViewComponent {
   date = new FormControl(new Date());
   fromDate = new Date(); // TODO: Can I initialise this to a week before the above date? Or is this better done in NgOnInit?
 
-  tasks: Task[] = []
-  
+  tasks: Task[] = [];
+
   ngOnInit() {
     this.fromDate.setDate(this.date.value!.getDate() - 7);
-    
+
     this.tasks = [
       {
         name: 'Testing 1',
@@ -55,7 +55,7 @@ export class WeekViewComponent {
         hoursDone: 7,
         minGoal: 5,
         maxGoal: 10,
-      }
-    ]
+      },
+    ];
   }
 }

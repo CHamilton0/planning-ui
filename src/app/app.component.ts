@@ -13,6 +13,4 @@ import { DayEditorComponent } from './day-editor/day-editor.component';
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
-export class AppComponent {
-  title = 'planning-ui';
-}
+export class AppComponent {}

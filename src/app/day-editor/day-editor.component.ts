@@ -14,6 +14,10 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
+import { Apollo } from 'apollo-angular';
+import { GET_DAY } from '../services/graphql.operations';
+import { GraphqlService } from '../services/graphql.service';
+import { Item } from '../interfaces/item';
 
 @Component({
   selector: 'app-day-editor',
@@ -39,25 +43,28 @@ export class DayEditorComponent {
   options: string[] = ['Task 1', 'Task 2', 'Task 3'];
   selectedOptions: string[] = [];
 
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder, private graphqlService: GraphqlService) {
     this.myForm = this.fb.group({
       formGroups: this.fb.array([]),
     });
   }
 
-  ngOnInit() {
-    this.addFormGroup();
+  async ngOnInit() {
+    const day = await this.graphqlService.loadDay(this.date.value);
+    for (const item of day.items) {
+      this.addFormGroup(item);
+    }
   }
 
   get formGroups(): FormArray {
     return this.myForm.get('formGroups') as FormArray;
   }
 
-  addFormGroup(): void {
+  addFormGroup(item?: Item): void {
     const formGroup = this.fb.group({
       // Define your form group structure here
-      name: ['', Validators.required],
-      hours: [0, [Validators.required, Validators.min(1)]],
+      name: [item?.name ?? '', Validators.required],
+      hours: [item?.hours ?? 0, [Validators.required, Validators.min(1)]],
     });
 
     formGroup.valueChanges.subscribe((value) => {
