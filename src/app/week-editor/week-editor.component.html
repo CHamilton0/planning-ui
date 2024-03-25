@@ -1,6 +1,32 @@
-<mat-form-field>
-    <mat-label>Goal 1</mat-label>
-    <input matInput type="number"> <!-- [(ngModel)]="goal1"-->
-</mat-form-field>
+<h1>Edit Tasks</h1>
 
-<button mat-raised-button>Submit</button>
+<form [formGroup]="myForm">
+  <div formArrayName="formGroups">
+    <div
+      *ngFor="let group of formGroups.controls; let i = index"
+      [formGroupName]="i"
+    >
+      <mat-form-field>
+        <mat-label>Task Name</mat-label>
+        <input matInput formControlName="name" />
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Min Goal</mat-label>
+        <input matInput formControlName="minGoal" type="number" />
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Max Goal</mat-label>
+        <input matInput formControlName="maxGoal" type="number" />
+      </mat-form-field>
+      <button (click)="deleteFormGroup(i)">X</button>
+    </div>
+  </div>
+  <button
+    (click)="addFormGroup()"
+    [disabled]="myForm.invalid && formGroups.controls.length > 0"
+  >
+    Add Form Group
+  </button>
+</form>
+
+<button>Done</button>
