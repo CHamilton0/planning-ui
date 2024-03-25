@@ -21,4 +21,16 @@ const GET_GOALS = gql`
   }
 `;
 
-export { GET_DAY, GET_GOALS };
+const SET_DAY_ITEMS = gql`
+  mutation SetDayItems($day: DateTime, $items: [ItemInput!]!) {
+    setDayItems(day: $day, items: $items) {
+      day
+      items {
+        hours
+        name
+      }
+    }
+  }
+`;
+
+export { GET_DAY, GET_GOALS, SET_DAY_ITEMS };

@@ -68,8 +68,13 @@ export class DayEditorComponent {
     });
 
     formGroup.valueChanges.subscribe((value) => {
-      if (formGroup.valid) {
-        console.log(value);
+      if (formGroup.valid && value.hours && value.name) {
+        this.graphqlService.setDayItems(this.date.value, [
+          {
+            name: value.name,
+            hours: value.hours,
+          },
+        ]);
       }
     });
 
