@@ -41,6 +41,14 @@ export class WeekViewComponent {
   constructor(private graphqlService: GraphqlService) {}
 
   async ngOnInit() {
+    await this.getData();
+
+    this.date.valueChanges.subscribe(async () => {
+      await this.getData();
+    });
+  }
+
+  async getData() {
     this.fromDate.setDate(this.date.value!.getDate() - 7);
 
     this.weeklySummary = await this.graphqlService.getWeeklySummary(this.date.value);
