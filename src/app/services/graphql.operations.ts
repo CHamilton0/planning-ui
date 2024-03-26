@@ -1,6 +1,6 @@
 import { gql } from 'apollo-angular';
 
-const GET_DAY = gql`
+export const GET_DAY = gql`
   query Day($day: DateTime) {
     day(day: $day) {
       day
@@ -12,16 +12,17 @@ const GET_DAY = gql`
   }
 `;
 
-const GET_GOALS = gql`
+export const GET_GOALS = gql`
   query Goals {
     goals {
-      hours
       name
+      minHours
+      maxHours
     }
   }
 `;
 
-const SET_DAY_ITEMS = gql`
+export const SET_DAY_ITEMS = gql`
   mutation SetDayItems($day: DateTime, $items: [ItemInput!]!) {
     setDayItems(day: $day, items: $items) {
       day
@@ -33,4 +34,12 @@ const SET_DAY_ITEMS = gql`
   }
 `;
 
-export { GET_DAY, GET_GOALS, SET_DAY_ITEMS };
+export const SET_GOALS = gql`
+  mutation SetGoals($items: [GoalInput!]!) {
+    setGoals(items: $items) {
+      name
+      minHours
+      maxHours
+    }
+  }
+`

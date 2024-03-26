@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
 import { Apollo } from 'apollo-angular';
-import { GET_DAY, GET_GOALS, SET_DAY_ITEMS } from './graphql.operations';
+import { GET_DAY, GET_GOALS, SET_DAY_ITEMS, SET_GOALS } from './graphql.operations';
 import { firstValueFrom, map, take } from 'rxjs';
 import { Day } from '../interfaces/day';
 import { Item } from '../interfaces/item';
+import { Goal } from '../interfaces/goal';
 
 @Injectable({
   providedIn: 'root',
@@ -34,7 +35,7 @@ export class GraphqlService {
   async getGoals() {
     const result = await firstValueFrom(
       this.apolloProvider
-        .query<{ goals: Item[] }>({
+        .query<{ goals: Goal[] }>({
           query: GET_GOALS,
         })
         .pipe(take(1))
@@ -54,11 +55,24 @@ export class GraphqlService {
         mutation: SET_DAY_ITEMS,
         variables: {
           day: newDate ?? null,
-          items: items,
+          items: items.map((item) => ({ name: item.name, hours: item.hours })),
         },
       }).pipe(take(1))
     );
 
     return result;
+  }
+
+  async setGoals(goals: Goal[]) {
+    const result = await firstValueFrom(
+      this.apolloProvider.mutate({
+        mutation: SET_GOALS,
+        variables: {
+          items: goals.map((goal) => ({ name: goal.name, minHours: goal.minHours, maxHours: goal.maxHours ?? null })),
+        }
+      }).pipe(take(1))
+    );
+
+    return result
   }
 }

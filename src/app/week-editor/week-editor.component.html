@@ -1,9 +1,9 @@
 <h1>Edit Tasks</h1>
 
-<form [formGroup]="myForm">
-  <div formArrayName="formGroups">
+<form [formGroup]="goalFormGroup">
+  <div formArrayName="goalForms">
     <div
-      *ngFor="let group of formGroups.controls; let i = index"
+      *ngFor="let group of goalForms.controls; let i = index"
       [formGroupName]="i"
     >
       <mat-form-field>
@@ -12,18 +12,18 @@
       </mat-form-field>
       <mat-form-field>
         <mat-label>Min Goal</mat-label>
-        <input matInput formControlName="minGoal" type="number" />
+        <input matInput formControlName="minHours" type="number" />
       </mat-form-field>
       <mat-form-field>
         <mat-label>Max Goal</mat-label>
-        <input matInput formControlName="maxGoal" type="number" />
+        <input matInput formControlName="maxHours" type="number" />
       </mat-form-field>
       <button (click)="deleteFormGroup(i)">X</button>
     </div>
   </div>
   <button
     (click)="addFormGroup()"
-    [disabled]="myForm.invalid && formGroups.controls.length > 0"
+    [disabled]="goalFormGroup.invalid && goalForms.controls.length > 0"
   >
     Add Form Group
   </button>
