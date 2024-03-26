@@ -38,56 +38,80 @@ import { Item } from '../interfaces/item';
 export class DayEditorComponent {
   date = new FormControl(new Date());
 
-  myForm: FormGroup;
+  dayForm: FormGroup;
 
-  options: string[] = ['Task 1', 'Task 2', 'Task 3'];
+  options: string[] = [];
   selectedOptions: string[] = [];
 
+  dayItems: Map<string, Item> = new Map();
+
   constructor(private fb: FormBuilder, private graphqlService: GraphqlService) {
-    this.myForm = this.fb.group({
-      formGroups: this.fb.array([]),
+    this.dayForm = this.fb.group({
+      itemForms: this.fb.array([]),
     });
   }
 
   async ngOnInit() {
+    // Get the goals for the option names
+    const goals = await this.graphqlService.getGoals();
+    this.options = goals.map((goal) => goal.name);
+
+    // Get the current day items and add a form group for each
     const day = await this.graphqlService.loadDay(this.date.value);
     for (const item of day.items) {
+      this.dayItems.set(item.name, item);
       this.addFormGroup(item);
     }
+
+    // Set the selected options based on currently selected items in forms
+    this.selectedOptions = this.itemForms.controls.map(
+      (control) => control.get('name')?.value
+    );
   }
 
-  get formGroups(): FormArray {
-    return this.myForm.get('formGroups') as FormArray;
+  get itemForms(): FormArray {
+    return this.dayForm.get('itemForms') as FormArray;
   }
 
   addFormGroup(item?: Item): void {
     const formGroup = this.fb.group({
-      // Define your form group structure here
       name: [item?.name ?? '', Validators.required],
       hours: [item?.hours ?? 0, [Validators.required, Validators.min(1)]],
     });
 
+    // When a form's value changes, update the day item
     formGroup.valueChanges.subscribe((value) => {
       if (formGroup.valid && value.hours && value.name) {
-        this.graphqlService.setDayItems(this.date.value, [
-          {
-            name: value.name,
-            hours: value.hours,
-          },
-        ]);
+        this.updateDayItems({
+          name: value.name,
+          hours: value.hours,
+        });
       }
     });
 
     formGroup.get('name')?.valueChanges.subscribe((value) => {
-      this.selectedOptions = this.formGroups.controls.map(
+      this.selectedOptions = this.itemForms.controls.map(
         (control) => control.get('name')?.value
       );
     });
 
-    this.formGroups.push(formGroup);
+    this.itemForms.push(formGroup);
+  }
+
+  updateDayItems(item: Item) {
+    this.dayItems.set(item.name, item);
+
+    this.graphqlService.setDayItems(this.date.value, Array.from(this.dayItems.values()));
   }
 
   deleteFormGroup(index: number): void {
-    this.formGroups.controls.splice(index, 1);
+    const itemToDelete: Item = this.itemForms.controls[index].value;
+    const selectedOptionIndex = this.selectedOptions.findIndex((option) => option === itemToDelete.name)
+
+    this.selectedOptions.splice(selectedOptionIndex, 1);
+    this.itemForms.controls.splice(index, 1);
+
+    this.dayItems.delete(itemToDelete.name);
+    this.graphqlService.setDayItems(this.date.value, Array.from(this.dayItems.values()));
   }
 }

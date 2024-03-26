@@ -8,20 +8,13 @@
   <mat-datepicker #picker></mat-datepicker>
 </mat-form-field>
 
-<form [formGroup]="myForm">
-  <div formArrayName="formGroups">
-    <div
-      *ngFor="let group of formGroups.controls; let i = index"
-      [formGroupName]="i"
-    >
+<form [formGroup]="dayForm">
+  <div formArrayName="itemForms">
+    <div *ngFor="let group of itemForms.controls; let i = index" [formGroupName]="i">
       <mat-form-field>
         <mat-label>Task</mat-label>
         <select matNativeControl formControlName="name">
-          <option
-            *ngFor="let option of options"
-            [value]="option"
-            [disabled]="selectedOptions.includes(option)"
-          >
+          <option *ngFor="let option of options" [value]="option" [disabled]="selectedOptions.includes(option)">
             {{ option }}
           </option>
         </select>
@@ -33,10 +26,8 @@
       <button (click)="deleteFormGroup(i)">X</button>
     </div>
   </div>
-  <button
-    (click)="addFormGroup()"
-    [disabled]="myForm.invalid && formGroups.controls.length > 0"
-  >
+  <button (click)="addFormGroup()"
+    [disabled]="(dayForm.invalid && itemForms.controls.length > 0) || (selectedOptions.length === options.length)">
     Add Form Group
   </button>
 </form>
