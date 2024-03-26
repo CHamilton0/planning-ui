@@ -9,15 +9,20 @@ import { Item } from '../interfaces/item';
   providedIn: 'root',
 })
 export class GraphqlService {
-  constructor(private apolloProvider: Apollo) {}
+  constructor(private apolloProvider: Apollo) { }
 
   async loadDay(date: Date | null) {
+    let newDate = undefined;
+    if (date) {
+      newDate = new Date(date.getTime() - date.getTimezoneOffset() * 60000).toISOString();
+    }
+
     const result = await firstValueFrom(
       this.apolloProvider
         .query<{ day: Day }>({
           query: GET_DAY,
           variables: {
-            day: date?.toISOString() ?? null,
+            day: newDate ?? null,
           },
         })
         .pipe(take(1))
@@ -39,11 +44,16 @@ export class GraphqlService {
   }
 
   async setDayItems(date: Date | null, items: Item[]) {
+    let newDate = undefined;
+    if (date) {
+      newDate = new Date(date.getTime() - date.getTimezoneOffset() * 60000).toISOString();
+    }
+
     const result = await firstValueFrom(
       this.apolloProvider.mutate({
         mutation: SET_DAY_ITEMS,
         variables: {
-          day: date?.toISOString() ?? null,
+          day: newDate ?? null,
           items: items,
         },
       }).pipe(take(1))

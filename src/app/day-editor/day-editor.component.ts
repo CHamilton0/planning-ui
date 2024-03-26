@@ -56,6 +56,18 @@ export class DayEditorComponent {
     const goals = await this.graphqlService.getGoals();
     this.options = goals.map((goal) => goal.name);
 
+    this.fetchDataForDate();
+
+    this.date.valueChanges.subscribe(() => {
+      const date = this.date.value;
+
+      this.dayItems.clear();
+      this.itemForms.clear();
+      this.fetchDataForDate();
+    });
+  }
+
+  async fetchDataForDate() {
     // Get the current day items and add a form group for each
     const day = await this.graphqlService.loadDay(this.date.value);
     for (const item of day.items) {
