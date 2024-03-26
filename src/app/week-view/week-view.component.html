@@ -20,11 +20,11 @@
         </tr>
     </thead>
     <tbody>
-        <tr *ngFor="let task of tasks; index as i;">
+        <tr *ngFor="let task of weeklySummary index as i;">
             <td> {{ task.name }} </td>
             <td> {{ task.hoursDone }} </td>
-            <td> {{ task.minGoal }} </td>
-            <td> {{ task.maxGoal }} </td>
+            <td> {{ task.minHours }} </td>
+            <td> {{ task.maxHours }} </td>
         </tr>
     </tbody>
 </table>

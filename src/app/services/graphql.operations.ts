@@ -22,6 +22,17 @@ export const GET_GOALS = gql`
   }
 `;
 
+export const GET_WEEKLY_SUMMARY = gql`
+  query WeeklySummary ($day: DateTime) {
+    weeklySummary(day: $day) {
+      name
+      minHours
+      maxHours
+      hoursDone
+    }
+  }
+`
+
 export const SET_DAY_ITEMS = gql`
   mutation SetDayItems($day: DateTime, $items: [ItemInput!]!) {
     setDayItems(day: $day, items: $items) {

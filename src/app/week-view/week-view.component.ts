@@ -10,6 +10,8 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { Task } from '../interfaces/task';
 import { CommonModule } from '@angular/common';
 import { MatTableModule } from '@angular/material/table';
+import { Summary } from '../interfaces/summary';
+import { GraphqlService } from '../services/graphql.service';
 
 @Component({
   selector: 'app-week-view',
@@ -34,28 +36,13 @@ export class WeekViewComponent {
   date = new FormControl(new Date());
   fromDate = new Date(); // TODO: Can I initialise this to a week before the above date? Or is this better done in NgOnInit?
 
-  tasks: Task[] = [];
+  weeklySummary: Summary[] = [];
 
-  ngOnInit() {
+  constructor(private graphqlService: GraphqlService) {}
+
+  async ngOnInit() {
     this.fromDate.setDate(this.date.value!.getDate() - 7);
 
-    this.tasks = [
-      {
-        name: 'Testing 1',
-        hoursDone: 1,
-        minGoal: 5,
-      },
-      {
-        name: 'Testing 2',
-        hoursDone: 20,
-        minGoal: 10,
-      },
-      {
-        name: 'Testing 3',
-        hoursDone: 7,
-        minGoal: 5,
-        maxGoal: 10,
-      },
-    ];
+    this.weeklySummary = await this.graphqlService.getWeeklySummary(this.date.value);
   }
 }
