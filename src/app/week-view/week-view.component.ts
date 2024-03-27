@@ -39,7 +39,9 @@ export class WeekViewComponent {
   weeklySummary: Summary[] = [];
   inf = Infinity;
 
-  constructor(private graphqlService: GraphqlService) {}
+  fullSpaceRepresentsHours = 0;
+
+  constructor(private graphqlService: GraphqlService) { }
 
   async ngOnInit() {
     await this.getData();
@@ -53,5 +55,32 @@ export class WeekViewComponent {
     this.fromDate.setDate(this.date.value!.getDate() - 7);
 
     this.weeklySummary = await this.graphqlService.getWeeklySummary(this.date.value);
+
+    let highestHours = 0;
+    for (const summary of this.weeklySummary) {
+      const summaryHighestHours = Math.max(summary.hoursDone, summary.minHours, summary.maxHours ?? 0)
+      if (summaryHighestHours > highestHours) {
+        highestHours = summaryHighestHours;
+      }
+    }
+    this.fullSpaceRepresentsHours = highestHours
+  }
+
+  getHoursDoneStyle(task: Summary) {
+    const percentageOfMax = (task.hoursDone / this.fullSpaceRepresentsHours) * 100;
+
+    return `width: ${percentageOfMax}%;`;
+  }
+
+  getGoalStyle(task: Summary) {
+    const minGoalPercentage = (task.minHours / this.fullSpaceRepresentsHours) * 100;
+    let width = '0';
+
+    let style = `margin-left: ${minGoalPercentage}%;`
+    if (task.maxHours) {
+      width = (((task.maxHours - task.minHours) / this.fullSpaceRepresentsHours) * 100).toString();
+    }
+    console.log(`${style} width: ${width}%`);
+    return `${style} width: ${width}%`;
   }
 }

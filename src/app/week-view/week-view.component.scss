@@ -1,3 +1,15 @@
 .in-range {
     color: green;
 }
+
+.done {
+    background-color: blue;
+    height: 10px;
+    position: absolute;
+}
+
+.goal {
+    border: 1px dashed black;
+    height: 12px;
+    position: absolute;
+}

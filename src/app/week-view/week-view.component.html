@@ -8,15 +8,7 @@
     <mat-datepicker #picker></mat-datepicker>
 </mat-form-field>
 
-<table>
-    <thead>
-        <tr>
-            <td> Task </td>
-            <td> Hours Done </td>
-            <td> Min Goal </td>
-            <td> Max Goal </td>
-        </tr>
-    </thead>
+<table style="width: 100%">
     <tbody>
         <tr *ngFor="let task of weeklySummary index as i;">
             <td> {{ task.name }} </td>
@@ -24,8 +16,10 @@
                 [ngClass]="{'in-range': (task.hoursDone >= task.minHours) && (task.hoursDone <= (task.maxHours ?? inf))}">
                 {{ task.hoursDone }}
             </td>
-            <td> {{ task.minHours }} </td>
-            <td> {{ task.maxHours }} </td>
+            <td style="width: 50%; height: 10px; position: relative">
+                <div class="done" [style]="getHoursDoneStyle(task)"></div>
+                <div class="goal" [style]="getGoalStyle(task)"></div>
+            </td>
         </tr>
     </tbody>
 </table>
