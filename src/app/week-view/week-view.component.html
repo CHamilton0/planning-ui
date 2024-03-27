@@ -3,22 +3,40 @@
 <mat-form-field>
     <mat-label>Week ending</mat-label>
     <input matInput [matDatepicker]="picker" [formControl]="date">
-    <mat-hint>MM/DD/YYYY</mat-hint>
     <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
     <mat-datepicker #picker></mat-datepicker>
 </mat-form-field>
 
 <table style="width: 100%">
+    <thead>
+        <tr>
+            <td>
+                <div class="inner-table">Task</div>
+            </td>
+            <td>
+                <div class="inner-table">Hours Done</div>
+            </td>
+            <td>
+                <div class="inner-table">Progress</div>
+            </td>
+        </tr>
+    </thead>
     <tbody>
         <tr *ngFor="let task of summaryDisplay index as i;">
-            <td> {{ task.name }} </td>
+            <td>
+                <div class="inner-table">{{ task.name }}</div>
+            </td>
             <td
                 [ngClass]="{'in-range': (task.hoursDone >= task.minHours) && (task.hoursDone <= (task.maxHours ?? inf))}">
-                {{ task.hoursDone }}
+                <div class="inner-table">
+                    {{ task.hoursDone | number }}
+                </div>
             </td>
             <td style="width: 50%; height: 10px; position: relative">
-                <div class="done" [style]="task.hoursDoneStyle"></div>
-                <div class="goal" [style]="task.goalStyle"></div>
+                <div class="progress-display">
+                    <div class="done" [style]="task.hoursDoneStyle"></div>
+                    <div class="goal" [style]="task.goalStyle"></div>
+                </div>
             </td>
         </tr>
     </tbody>

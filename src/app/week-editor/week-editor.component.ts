@@ -13,6 +13,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { GraphqlService } from '../services/graphql.service';
 import { Goal } from '../interfaces/goal';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-week-editor',
@@ -24,6 +25,7 @@ import { Goal } from '../interfaces/goal';
     ReactiveFormsModule,
     MatButtonModule,
     CommonModule,
+    MatIconModule,
   ],
   templateUrl: './week-editor.component.html',
   styleUrl: './week-editor.component.scss',

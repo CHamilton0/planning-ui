@@ -2,10 +2,7 @@
 
 <form [formGroup]="goalFormGroup">
   <div formArrayName="goalForms">
-    <div
-      *ngFor="let group of goalForms.controls; let i = index"
-      [formGroupName]="i"
-    >
+    <div *ngFor="let group of goalForms.controls; let i = index" [formGroupName]="i">
       <mat-form-field>
         <mat-label>Task Name</mat-label>
         <input matInput formControlName="name" />
@@ -18,15 +15,14 @@
         <mat-label>Max Goal</mat-label>
         <input matInput formControlName="maxHours" type="number" />
       </mat-form-field>
-      <button (click)="deleteFormGroup(i)">X</button>
+      <button mat-icon-button (click)="deleteFormGroup(i)">
+        <mat-icon>close</mat-icon>
+      </button>
     </div>
   </div>
-  <button
-    (click)="addFormGroup()"
-    [disabled]="goalFormGroup.invalid && goalForms.controls.length > 0"
-  >
+  <button mat-button (click)="addFormGroup()" [disabled]="goalFormGroup.invalid && goalForms.controls.length > 0">
     Add Form Group
   </button>
 </form>
 
-<button>Done</button>
+<button mat-button>Done</button>

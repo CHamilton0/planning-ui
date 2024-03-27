@@ -18,6 +18,7 @@ import { Apollo } from 'apollo-angular';
 import { GET_DAY } from '../services/graphql.operations';
 import { GraphqlService } from '../services/graphql.service';
 import { Item } from '../interfaces/item';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-day-editor',
@@ -31,6 +32,7 @@ import { Item } from '../interfaces/item';
     CommonModule,
     MatDatepickerModule,
     MatSelectModule,
+    MatIconModule,
   ],
   templateUrl: './day-editor.component.html',
   styleUrl: './day-editor.component.scss',
