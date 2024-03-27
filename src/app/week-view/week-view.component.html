@@ -10,15 +10,15 @@
 
 <table style="width: 100%">
     <tbody>
-        <tr *ngFor="let task of weeklySummary index as i;">
+        <tr *ngFor="let task of summaryDisplay index as i;">
             <td> {{ task.name }} </td>
             <td
                 [ngClass]="{'in-range': (task.hoursDone >= task.minHours) && (task.hoursDone <= (task.maxHours ?? inf))}">
                 {{ task.hoursDone }}
             </td>
             <td style="width: 50%; height: 10px; position: relative">
-                <div class="done" [style]="getHoursDoneStyle(task)"></div>
-                <div class="goal" [style]="getGoalStyle(task)"></div>
+                <div class="done" [style]="task.hoursDoneStyle"></div>
+                <div class="goal" [style]="task.goalStyle"></div>
             </td>
         </tr>
     </tbody>

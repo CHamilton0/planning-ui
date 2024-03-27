@@ -7,10 +7,9 @@ import { MatInputModule } from '@angular/material/input';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
-import { Task } from '../interfaces/task';
 import { CommonModule } from '@angular/common';
 import { MatTableModule } from '@angular/material/table';
-import { Summary } from '../interfaces/summary';
+import { Summary, SummaryDisplay } from '../interfaces/summary';
 import { GraphqlService } from '../services/graphql.service';
 
 @Component({
@@ -37,6 +36,7 @@ export class WeekViewComponent {
   fromDate = new Date(); // TODO: Can I initialise this to a week before the above date? Or is this better done in NgOnInit?
 
   weeklySummary: Summary[] = [];
+  summaryDisplay: SummaryDisplay[] = [];
   inf = Infinity;
 
   fullSpaceRepresentsHours = 0;
@@ -64,6 +64,13 @@ export class WeekViewComponent {
       }
     }
     this.fullSpaceRepresentsHours = highestHours
+
+    this.summaryDisplay = this.weeklySummary.map((summaryData) => {
+      const summaryDisplay: SummaryDisplay = { ...summaryData };
+      summaryDisplay.goalStyle = this.getGoalStyle(summaryData);
+      summaryDisplay.hoursDoneStyle = this.getHoursDoneStyle(summaryData);
+      return summaryDisplay;
+    })
   }
 
   getHoursDoneStyle(task: Summary) {
@@ -80,7 +87,6 @@ export class WeekViewComponent {
     if (task.maxHours) {
       width = (((task.maxHours - task.minHours) / this.fullSpaceRepresentsHours) * 100).toString();
     }
-    console.log(`${style} width: ${width}%`);
     return `${style} width: ${width}%`;
   }
 }
