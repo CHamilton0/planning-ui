@@ -37,3 +37,15 @@ table {
         font-weight: bold;
     }
 }
+
+.min-marker {
+    position: absolute;
+    top: -24px;
+    left: -8px;
+}
+
+.max-marker {
+    position: absolute;
+    top: -24px;
+    right: -8px;
+}

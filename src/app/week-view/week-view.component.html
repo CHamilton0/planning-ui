@@ -8,22 +8,9 @@
 </mat-form-field>
 
 <table style="width: 100%">
-    <thead>
-        <tr>
-            <td>
-                <div class="inner-table">Task</div>
-            </td>
-            <td>
-                <div class="inner-table">Hours Done</div>
-            </td>
-            <td>
-                <div class="inner-table">Progress</div>
-            </td>
-        </tr>
-    </thead>
     <tbody>
         <tr *ngFor="let task of summaryDisplay index as i;">
-            <td>
+            <td style="min-width: max-content; padding: 24px;">
                 <div class="inner-table">{{ task.name }}</div>
             </td>
             <td
@@ -32,10 +19,13 @@
                     {{ task.hoursDone | number }}
                 </div>
             </td>
-            <td style="width: 50%; height: 10px; position: relative">
+            <td style="width: 100%; height: 10px; position: relative">
                 <div class="progress-display">
                     <div class="done" [style]="task.hoursDoneStyle"></div>
-                    <div class="goal" [style]="task.goalStyle"></div>
+                    <div class="goal" [style]="task.goalStyle">
+                        <div class="min-marker">{{task.minHours | number: '1.0-0'}}</div>
+                        <div *ngIf="task.maxHours" class="max-marker">{{task.maxHours | number: '1.0-0'}}</div>
+                    </div>
                 </div>
             </td>
         </tr>
