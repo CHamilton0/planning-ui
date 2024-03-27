@@ -37,6 +37,7 @@ export class WeekViewComponent {
   fromDate = new Date(); // TODO: Can I initialise this to a week before the above date? Or is this better done in NgOnInit?
 
   weeklySummary: Summary[] = [];
+  inf = Infinity;
 
   constructor(private graphqlService: GraphqlService) {}
 

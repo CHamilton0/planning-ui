@@ -20,7 +20,10 @@
     <tbody>
         <tr *ngFor="let task of weeklySummary index as i;">
             <td> {{ task.name }} </td>
-            <td> {{ task.hoursDone }} </td>
+            <td
+                [ngClass]="{'in-range': (task.hoursDone >= task.minHours) && (task.hoursDone <= (task.maxHours ?? inf))}">
+                {{ task.hoursDone }}
+            </td>
             <td> {{ task.minHours }} </td>
             <td> {{ task.maxHours }} </td>
         </tr>
