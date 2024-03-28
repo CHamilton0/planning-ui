@@ -7,6 +7,9 @@
     <mat-datepicker #picker></mat-datepicker>
 </mat-form-field>
 
+<p *ngIf="date.value">Showing data from {{ fromDate.toISOString().split('T')[0] }} to {{
+    date.value.toISOString().split('T')[0] }}</p>
+
 <table style="width: 100%">
     <tbody>
         <tr *ngFor="let task of summaryDisplay index as i;">

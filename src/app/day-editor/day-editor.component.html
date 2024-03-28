@@ -9,7 +9,8 @@
 
 <form [formGroup]="dayForm">
   <div formArrayName="itemForms">
-    <div *ngFor="let group of itemForms.controls; let i = index" [formGroupName]="i">
+    <div *ngFor="let group of itemForms.controls; let i = index" [formGroupName]="i"
+      style="display: flex; justify-content: space-between;">
       <mat-form-field>
         <mat-label>Task</mat-label>
         <select matNativeControl formControlName="name">

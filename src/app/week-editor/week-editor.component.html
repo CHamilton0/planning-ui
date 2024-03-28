@@ -2,16 +2,17 @@
 
 <form [formGroup]="goalFormGroup">
   <div formArrayName="goalForms">
-    <div *ngFor="let group of goalForms.controls; let i = index" [formGroupName]="i">
+    <div *ngFor="let group of goalForms.controls; let i = index" [formGroupName]="i"
+      style="display: flex; justify-content: space-between;">
       <mat-form-field>
         <mat-label>Task Name</mat-label>
         <input matInput formControlName="name" />
       </mat-form-field>
-      <mat-form-field>
+      <mat-form-field class="hours-field">
         <mat-label>Min Goal</mat-label>
         <input matInput formControlName="minHours" type="number" />
       </mat-form-field>
-      <mat-form-field>
+      <mat-form-field class="hours-field">
         <mat-label>Max Goal</mat-label>
         <input matInput formControlName="maxHours" type="number" />
       </mat-form-field>

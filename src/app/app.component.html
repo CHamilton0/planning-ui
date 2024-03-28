@@ -1,3 +1,23 @@
-<app-week-view></app-week-view>
-<app-week-editor></app-week-editor>
-<app-day-editor></app-day-editor>
+<mat-tab-group>
+    <mat-tab label="View Week">
+        <ng-template matTabContent>
+            <div class="tab-content">
+                <app-week-view></app-week-view>
+            </div>
+        </ng-template>
+    </mat-tab>
+    <mat-tab label="Edit Tasks">
+        <ng-template matTabContent>
+            <div class="tab-content">
+                <app-week-editor></app-week-editor>
+            </div>
+        </ng-template>
+    </mat-tab>
+    <mat-tab label="Edit Day">
+        <ng-template matTabContent>
+            <div class="tab-content">
+                <app-day-editor></app-day-editor>
+            </div>
+        </ng-template>
+    </mat-tab>
+</mat-tab-group>
