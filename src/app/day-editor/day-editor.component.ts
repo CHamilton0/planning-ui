@@ -90,7 +90,7 @@ export class DayEditorComponent {
   addFormGroup(item?: Item): void {
     const formGroup = this.fb.group({
       name: [item?.name ?? '', Validators.required],
-      hours: [item?.hours ?? 0, [Validators.required, Validators.min(1)]],
+      hours: [item?.hours ?? 0, [Validators.required, Validators.min(0)]],
     });
 
     // When a form's value changes, update the day item

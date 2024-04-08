@@ -56,8 +56,8 @@ export class WeekEditorComponent {
     const formGroup = this.fb.group({
       // Define your form group structure here
       name: [goal?.name ?? '', Validators.required],
-      minHours: [goal?.minHours ?? 0, [Validators.required, Validators.min(1)]],
-      maxHours: [goal?.maxHours ?? undefined, [Validators.min(1)]],
+      minHours: [goal?.minHours ?? 0, [Validators.required, Validators.min(0)]],
+      maxHours: [goal?.maxHours ?? undefined, [Validators.min(0)]],
     });
 
     formGroup.valueChanges.subscribe((value) => {
