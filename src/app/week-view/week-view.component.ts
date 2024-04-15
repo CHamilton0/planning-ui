@@ -33,9 +33,10 @@ import { GraphqlService } from '../services/graphql.service';
 })
 export class WeekViewComponent {
   date = new FormControl(new Date());
-  fromDate = new Date(); // TODO: Can I initialise this to a week before the above date? Or is this better done in NgOnInit?
+  range = new FormControl(7);
+  fromDate = new Date();
 
-  weeklySummary: Summary[] = [];
+  summary: Summary[] = [];
   summaryDisplay: SummaryDisplay[] = [];
   inf = Infinity;
 
@@ -49,15 +50,19 @@ export class WeekViewComponent {
     this.date.valueChanges.subscribe(async () => {
       await this.getData();
     });
+
+    this.range.valueChanges.subscribe(async () => {
+      await this.getData();
+    });
   }
 
   async getData() {
     this.fromDate.setDate(this.date.value!.getDate() - 7);
 
-    this.weeklySummary = await this.graphqlService.getWeeklySummary(this.date.value);
+    this.summary = await this.graphqlService.getSummary(this.date.value, this.range.value);
 
     let highestHours = 0;
-    for (const summary of this.weeklySummary) {
+    for (const summary of this.summary) {
       const summaryHighestHours = Math.max(summary.hoursDone, summary.minHours, summary.maxHours ?? 0)
       if (summaryHighestHours > highestHours) {
         highestHours = summaryHighestHours;
@@ -65,7 +70,7 @@ export class WeekViewComponent {
     }
     this.fullSpaceRepresentsHours = highestHours
 
-    this.summaryDisplay = this.weeklySummary.map((summaryData) => {
+    this.summaryDisplay = this.summary.map((summaryData) => {
       const summaryDisplay: SummaryDisplay = { ...summaryData };
       summaryDisplay.goalStyle = this.getGoalStyle(summaryData);
       summaryDisplay.hoursDoneStyle = this.getHoursDoneStyle(summaryData);

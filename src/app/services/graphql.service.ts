@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Apollo } from 'apollo-angular';
-import { GET_DAY, GET_GOALS, GET_WEEKLY_SUMMARY, SET_DAY_ITEMS, SET_GOALS } from './graphql.operations';
+import { GET_DAY, GET_GOALS, GET_SUMMARY, SET_DAY_ITEMS, SET_GOALS } from './graphql.operations';
 import { firstValueFrom, map, take } from 'rxjs';
 import { Day } from '../interfaces/day';
 import { Item } from '../interfaces/item';
@@ -45,7 +45,7 @@ export class GraphqlService {
     return result.data.goals;
   }
 
-  async getWeeklySummary(date: Date | null) {
+  async getSummary(date: Date | null, range: number | null) {
     let newDate = undefined;
     if (date) {
       newDate = new Date(date.getTime() - date.getTimezoneOffset() * 60000).toISOString();
@@ -53,16 +53,17 @@ export class GraphqlService {
 
     const result = await firstValueFrom(
       this.apolloProvider
-        .query<{ weeklySummary: Summary[] }>({
-          query: GET_WEEKLY_SUMMARY,
+        .query<{ summary: Summary[] }>({
+          query: GET_SUMMARY,
           variables: {
             day: newDate ?? null,
+            dayRange: range,
           },
         })
         .pipe(take(1))
     );
 
-    return result.data.weeklySummary;
+    return result.data.summary;
   }
 
   async setDayItems(date: Date | null, items: Item[]) {

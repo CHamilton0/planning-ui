@@ -22,9 +22,9 @@ export const GET_GOALS = gql`
   }
 `;
 
-export const GET_WEEKLY_SUMMARY = gql`
-  query WeeklySummary ($day: DateTime) {
-    weeklySummary(day: $day) {
+export const GET_SUMMARY = gql`
+  query Summary ($day: DateTime, $dayRange: Int) {
+    summary(day: $day, dayRange: $dayRange) {
       name
       minHours
       maxHours

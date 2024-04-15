@@ -1,10 +1,15 @@
-<h1>Weekly View</h1>
+<h1>Summary View</h1>
 
 <mat-form-field>
-    <mat-label>Week ending</mat-label>
+    <mat-label>Summary ending</mat-label>
     <input matInput [matDatepicker]="picker" [formControl]="date">
     <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
     <mat-datepicker #picker></mat-datepicker>
+</mat-form-field>
+
+<mat-form-field>
+    <mat-label>Number of days</mat-label>
+    <input matInput type="number" [formControl]="range">
 </mat-form-field>
 
 <p *ngIf="date.value">Showing data from {{ fromDate.toISOString().split('T')[0] }} to {{
