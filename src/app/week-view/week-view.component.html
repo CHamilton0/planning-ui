@@ -1,43 +1,62 @@
 <h1>Summary View</h1>
 
 <mat-form-field>
-    <mat-label>Summary ending</mat-label>
-    <input matInput [matDatepicker]="picker" [formControl]="date">
-    <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
-    <mat-datepicker #picker></mat-datepicker>
+  <mat-label>Summary ending</mat-label>
+  <input matInput [matDatepicker]="picker" [formControl]="date" />
+  <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+  <mat-datepicker #picker></mat-datepicker>
 </mat-form-field>
 
 <mat-form-field>
-    <mat-label>Number of days</mat-label>
-    <input matInput type="number" [formControl]="range">
+  <mat-label>Number of days</mat-label>
+  <input matInput type="number" [formControl]="range" />
 </mat-form-field>
 
-<p *ngIf="date.value">Showing data from {{ fromDate.toISOString().split('T')[0] }} to {{
-    date.value.toISOString().split('T')[0] }}</p>
+<p *ngIf="date.value">
+  Showing data from {{ fromDate.toISOString().split("T")[0] }} to
+  {{ date.value.toISOString().split("T")[0] }}
+</p>
 
 <table style="width: 100%">
-    <tbody>
-        <tr *ngFor="let task of summaryDisplay index as i;">
-            <td style="min-width: max-content; padding: 24px;">
-                <div class="inner-table">{{ task.name }}</div>
-            </td>
-            <td
-                [ngClass]="{'in-range': (task.hoursDone >= task.minHours) && (task.hoursDone <= (task.maxHours || inf))}">
-                <div class="inner-table">
-                    {{ task.hoursDone | number }}
-                </div>
-            </td>
-            <td style="width: 100%; height: 10px; position: relative">
-                <div class="progress-display">
-                    <div class="done" [style]="task.hoursDoneStyle"
-                        [ngClass]="{'in-range': (task.hoursDone >= task.minHours) && (task.hoursDone <= (task.maxHours || inf))}">
-                    </div>
-                    <div class="goal" [style]="task.goalStyle">
-                        <div class="min-marker">{{task.minHours | number: '1.0-0'}}</div>
-                        <div *ngIf="task.maxHours" class="max-marker">{{task.maxHours | number: '1.0-0'}}</div>
-                    </div>
-                </div>
-            </td>
-        </tr>
-    </tbody>
+  <tbody>
+    <tr *ngFor="let task of summaryDisplay; index as i">
+      <td style="min-width: max-content; padding: 24px">
+        <div class="inner-table">{{ task.name }}</div>
+      </td>
+      <td
+        [style.color]="
+          'rgb(150, ' +
+          (255 -
+            (task.percentageDifference ? task.percentageDifference * 255 : 0)) +
+          ', 0)'
+        "
+      >
+        <div class="inner-table">
+          {{ task.hoursDone | number }}
+        </div>
+      </td>
+      <td style="width: 100%; height: 10px; position: relative">
+        <div class="progress-display">
+          <div
+            class="done"
+            [style]="task.hoursDoneStyle"
+            [style.background-color]="
+              'rgb(150, ' +
+              (255 -
+                (task.percentageDifference
+                  ? task.percentageDifference * 255
+                  : 0)) +
+              ', 0)'
+            "
+          ></div>
+          <div class="goal" [style]="task.goalStyle">
+            <div class="min-marker">{{ task.minHours | number : "1.0-0" }}</div>
+            <div *ngIf="task.maxHours" class="max-marker">
+              {{ task.maxHours | number : "1.0-0" }}
+            </div>
+          </div>
+        </div>
+      </td>
+    </tr>
+  </tbody>
 </table>
