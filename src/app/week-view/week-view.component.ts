@@ -89,7 +89,6 @@ export class WeekViewComponent {
         const midpoint = summaryData.maxHours
           ? (summaryData.maxHours + summaryData.minHours) / 2
           : summaryData.minHours;
-          console.log(midpoint)
         const diff = Math.abs(midpoint - summaryData.hoursDone);
 
         summaryDisplay.percentageDifference = diff / midpoint;
