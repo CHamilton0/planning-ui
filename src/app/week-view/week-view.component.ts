@@ -57,7 +57,9 @@ export class WeekViewComponent {
   }
 
   async getData() {
-    this.fromDate.setDate(this.date.value!.getDate() - 7);
+    if (this.range.value) {
+      this.fromDate.setDate(this.date.value!.getDate() - this.range.value);
+    }
 
     this.summary = await this.graphqlService.getSummary(this.date.value, this.range.value);
 
