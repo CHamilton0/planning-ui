@@ -42,7 +42,7 @@ export class WeekViewComponent {
 
   fullSpaceRepresentsHours = 0;
 
-  constructor(private graphqlService: GraphqlService) { }
+  constructor(private graphqlService: GraphqlService) {}
 
   async ngOnInit() {
     await this.getData();
@@ -57,40 +57,71 @@ export class WeekViewComponent {
   }
 
   async getData() {
-    this.fromDate.setDate(this.date.value!.getDate() - 7);
+    if (this.range.value) {
+      this.fromDate.setDate(this.date.value!.getDate() - this.range.value);
+    }
 
-    this.summary = await this.graphqlService.getSummary(this.date.value, this.range.value);
+    this.summary = await this.graphqlService.getSummary(
+      this.date.value,
+      this.range.value
+    );
 
     let highestHours = 0;
     for (const summary of this.summary) {
-      const summaryHighestHours = Math.max(summary.hoursDone, summary.minHours, summary.maxHours ?? 0)
+      const summaryHighestHours = Math.max(
+        summary.hoursDone,
+        summary.minHours,
+        summary.maxHours ?? 0
+      );
       if (summaryHighestHours > highestHours) {
         highestHours = summaryHighestHours;
       }
     }
-    this.fullSpaceRepresentsHours = highestHours
+    this.fullSpaceRepresentsHours = highestHours;
 
     this.summaryDisplay = this.summary.map((summaryData) => {
       const summaryDisplay: SummaryDisplay = { ...summaryData };
       summaryDisplay.goalStyle = this.getGoalStyle(summaryData);
       summaryDisplay.hoursDoneStyle = this.getHoursDoneStyle(summaryData);
+      if (summaryDisplay.maxHours && this.inRange(summaryDisplay)) {
+        summaryDisplay.percentageDifference = 0;
+      } else {
+        const midpoint = summaryData.maxHours
+          ? (summaryData.maxHours + summaryData.minHours) / 2
+          : summaryData.minHours;
+        const diff = Math.abs(midpoint - summaryData.hoursDone);
+
+        summaryDisplay.percentageDifference = diff / midpoint;
+      }
       return summaryDisplay;
-    })
+    });
+  }
+
+  inRange(summary: SummaryDisplay) {
+    return (
+      summary.hoursDone >= summary.minHours &&
+      summary.hoursDone <= (summary.maxHours || Infinity)
+    );
   }
 
   getHoursDoneStyle(task: Summary) {
-    const percentageOfMax = (task.hoursDone / this.fullSpaceRepresentsHours) * 100;
+    const percentageOfMax =
+      (task.hoursDone / this.fullSpaceRepresentsHours) * 100;
 
     return `width: ${percentageOfMax}%;`;
   }
 
   getGoalStyle(task: Summary) {
-    const minGoalPercentage = (task.minHours / this.fullSpaceRepresentsHours) * 100;
+    const minGoalPercentage =
+      (task.minHours / this.fullSpaceRepresentsHours) * 100;
     let width = '0';
 
-    let style = `margin-left: ${minGoalPercentage}%;`
+    let style = `margin-left: ${minGoalPercentage}%;`;
     if (task.maxHours) {
-      width = (((task.maxHours - task.minHours) / this.fullSpaceRepresentsHours) * 100).toString();
+      width = (
+        ((task.maxHours - task.minHours) / this.fullSpaceRepresentsHours) *
+        100
+      ).toString();
     }
     return `${style} width: ${width}%`;
   }
